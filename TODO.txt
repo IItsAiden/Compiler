@@ -1,0 +1,21 @@
+- (extra) string should be able to identify excape char e.g. \n \' \t
+- (extra) auto generate output file than can do checking if file exist, if yes then imcrement a number so that it do not replace the existed output file
+- write report
+
+
+material for report
+maybe can try compare execution time
+flex is more easy to write
+
+- flex
+easy to write (implement) cause have a documentation
+can declare condition
+
+- python
+build from scratch
+more sensitive to position
+e.g
+>=|<=|==|=|>|<
+=|>|<|>=|<=|==
+this 2 will yield 2 different result
+this wont happend in flex, flex is more smart

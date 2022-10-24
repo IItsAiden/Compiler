@@ -13,6 +13,7 @@ with|await|finally|nonlocal|yield)
 |(?P<comment>\#)
 |(?P<unknown>.)
 """
+# declare all the pattern for matching
 
 
 token_re = re.compile(token_pattern, re.VERBOSE)
@@ -27,11 +28,18 @@ def tokenize(text):
     isComment = False
     while True:
         m = token_re.match(text, pos)
+        # tokenize the input
+
         if not m:
             break
+        # break the infinite loop when finish tokenizing
+
         pos = m.end()
         tokname = m.lastgroup
         tokvalue = m.group(tokname)
+        # change the location of the end of the token for next round use
+        #get the name of the token and get the value using the name
+
         if tokvalue == '#' and isComment == False:
             isComment = True
             continue
@@ -61,22 +69,29 @@ def tokenize(text):
             yield 'string', inString
             inString = ''
             continue
+        # if else statement to check for whether the input is a string and comment and ways to handle them
 
         if tokname != 'whitespace' and tokname != 'newline':
             yield tokname, tokvalue
         else:
             continue
+        #  output the result
+
     if pos != len(text):
         raise TokenizerException(f"tokenizer stopped at pos {pos} {tokname} {tokvalue}")
 
-#filename = input('Enter filename: ')
+filename = input('Enter filename: ')
+# get filename from user
+
+#file1 = '../test/test1.py'
 
 try:
-    with open('../test/test1.py') as f:
+    with open(filename) as f:
         contents = f.read()
         for tok in tokenize(contents):
             if tok[1] != None:
                 print(f"({tok[0]}, '{tok[1]}')")
 except FileNotFoundError:
     msg = "Sorry, the file "+ filename + " does not exist."
-    print(msg) # Sorry, the file John.txt does not exist.
+    print(msg)
+# open the file and scan it, if file is not found output the above msg

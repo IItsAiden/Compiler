@@ -1,6 +1,6 @@
 import re
 
-token_pattern = r"""
+Patterns = r"""
 (?P<reserved>False|break|for|not|None|class|from|or|True|continue|global|pass|(_peg_parser_)|def|if|
 raise|and|del|import|return|as|elif|in|try|assert|else|is|while|async|except|lambda|
 with|await|finally|nonlocal|yield)
@@ -13,10 +13,10 @@ with|await|finally|nonlocal|yield)
 |(?P<comment>\#)
 |(?P<unknown>.)
 """
-# declare all the pattern for matching
+# declare all the patterns for matching
 
 
-token_re = re.compile(token_pattern, re.VERBOSE)
+tokenRe = re.compile(Patterns, re.VERBOSE)
 
 class TokenizerException(Exception): pass
 
@@ -27,61 +27,60 @@ def tokenize(text):
     inString = ''
     isComment = False
     while True:
-        m = token_re.match(text, pos)
-        # tokenize the input
-
+        m = tokenRe.match(text, pos)
         if not m:
             break
-        # break the infinite loop when finish tokenizing
-
         pos = m.end()
-        tokname = m.lastgroup
-        tokvalue = m.group(tokname)
-        # change the location of the end of the token for next round use
-        #get the name of the token and get the value using the name
+        tokenName = m.lastgroup
+        tokenValue = m.group(tokenName)
 
-        if tokvalue == '#' and isComment == False:
+        # Line 30 matches our input to the pattern we declared in line 3.
+        # Lines 31 through 32 break the infinite loop after the match is complete
+        # Line 33 records where we stopped while perform matching
+        # Lines 34 and 35 will get the name of the token and use that name to get the value
+
+        if tokenValue == '#' and isComment == False:
             isComment = True
             continue
-        if isComment and tokvalue != '\n':
+        if isComment and tokenValue != '\n':
             continue
-        if tokvalue == '\n' and isComment == True:
+        if tokenValue == '\n' and isComment == True:
             isComment = False
             continue
-        if (isString or isString1) and (tokvalue != '"' and tokvalue != "'"):
-            inString = inString + tokvalue
+        if (isString or isString1) and (tokenValue != '"' and tokenValue != "'"):
+            inString = inString + tokenValue
             continue
-        if tokvalue == '"' and isString == False:
+        if tokenValue == '"' and isString == False:
             isString = True
             continue
-        if tokvalue == '"' and isString == True:
+        if tokenValue == '"' and isString == True:
             isString = False
             isString1 = False
             yield 'string', inString
             inString = ''
             continue
-        if tokvalue == "'" and isString1 == False:
+        if tokenValue == "'" and isString1 == False:
             isString1 = True
             continue
-        if tokvalue == "'" and isString1 == True:
+        if tokenValue == "'" and isString1 == True:
             isString = False
             isString1 = False
             yield 'string', inString
             inString = ''
             continue
-        # if else statement to check for whether the input is a string and comment and ways to handle them
 
-        if tokname != 'whitespace' and tokname != 'newline':
-            yield tokname, tokvalue
+        # Lines 41 to 69 are if else statements that check if the input is a string or a comment, and the way to handle them.
+        # Lines 74 to 77 will output the results if it is not whitespace or newline
+
+        if tokenName != 'whitespace' and tokenName != 'newline':
+            yield tokenName, tokenValue
         else:
             continue
-        #  output the result
 
     if pos != len(text):
-        raise TokenizerException(f"tokenizer stopped at pos {pos} {tokname} {tokvalue}")
+        raise TokenizerException(f"tokenizer stopped at pos {pos} {tokenName} {tokenValue}")
 
 filename = input('Enter filename: ')
-# get filename from user
 
 #file1 = '../test/test1.py'
 
@@ -94,4 +93,6 @@ try:
 except FileNotFoundError:
     msg = "Sorry, the file "+ filename + " does not exist."
     print(msg)
-# open the file and scan it, if file is not found output the above msg
+
+# Line 82 will get the filename from the user
+# We will then open the file and scan it, and if no file is found, output the file not exist message.

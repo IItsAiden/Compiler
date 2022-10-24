@@ -34,7 +34,14 @@ COMPARISON  =|>|<|>=|<=|==|&&|\|\||!=
 \n      /* ignore */
 .       printf("Syntax Error");
 %%
-// declaration of the rules
+// Since we can't write comments in the rules section, we will write them here to explain what we have done.
+// Lines 1 to 3 are condition declaration. Conditions are used to differentiate the use of different rules.
+// Lines 5 through 8 are definition declaration. Its purpose is to make the code in the rules section look more clean.
+
+// Lines 19 through 21 show how conditions are initialized when a pattern is matched.
+// When conditions start, such as COMMENT, only those rules that have a <COMMENT> start condition will be run, as in line 30.
+
+// Lines 32 to 34 are used to ignore spaces and newlines.
 
 int yywrap(){}
 
@@ -49,7 +56,8 @@ int main(int argc, char** argv) {
             printf("file not found, proceed to terminal input.\n");}
     else
         yyin = stdin;
-    // open file to scan, if file is not found, will proceed to scan through terminal input
 
+    // Open the file for scanning when the program is executed
+    // If no file is found, scanning will continue via terminal input
     yylex();
     }

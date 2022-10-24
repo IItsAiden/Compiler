@@ -1939,32 +1939,12 @@ void yyfree (void * ptr )
 
 #line 36 "myflex.l"
 
+// declaration of the rules
 
 int yywrap(){}
-// int main(){
-
-// Explanation:
-// yywrap() - wraps the above rule section
-/* yyin - takes the file pointer
-		which contains the input*/
-/* yylex() - this is the main flex function
-		which runs the Rule Section*/
-// yytext is the text in the buffer
-
-// Uncomment the lines below
-// to take input from file
-// FILE *fp;
-// char filename[50];
-// printf("Enter filename:\n");
-// scanf("%s",filename);
-// fp = fopen(filename,"r");
-// yyin = fp;
-//
-// yylex();
-
 
 int main(int argc, char** argv) {
-    ++argv, --argc;  /* skip over program name */
+    ++argv, --argc;
     if (argc > 0) {
         FILE *file;
         file = fopen( argv[0], "r" );
@@ -1974,10 +1954,8 @@ int main(int argc, char** argv) {
             printf("file not found, proceed to terminal input.\n");}
     else
         yyin = stdin;
+    // open file to scan, if file is not found, will proceed to scan through terminal input
 
     yylex();
     }
-
-// return 0;
-// }
 
